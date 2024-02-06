@@ -1,42 +1,53 @@
 -- Learn the keybindings, see :help lsp-zero-keybindings
 -- Learn to configure LSP servers, see :help lsp-zero-api-showcase
-local lsp = require('lsp-zero')
+local lsp_zero = require('lsp-zero')
 
-lsp.preset('recommended')
-
-lsp.ensure_installed({
-	'tsserver',
-	'eslint',
-	'sumneko_lua',
-	'rust_analyzer',
-})
+-- lsp_zero.preset('recommended')
 
 -- Fix Undefined global 'vim'
-lsp.nvim_workspace()
+-- lsp_zero.nvim_workspace()
 
 -- Free Tab button for copilot
-local cmp = require('cmp')
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
-local cmp_mappings = lsp.defaults.cmp_mappings({
-  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-  ["<C-Space>"] = cmp.mapping.complete(),
-})
+-- local cmp = require('cmp')
+-- local cmp_action = require('lsp-zero').cmp_action()
+--
+-- cmp.setup({
+  -- window = {
+  --   completion = cmp.config.window.bordered(),
+  --   documentation = cmp.config.window.bordered(),
+  -- },
+--   mapping = cmp.mapping.preset.insert({
+--     ['<C-Space>'] = cmp.mapping.complete(),
+--     ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+--     ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+--     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+--     ['<C-d>'] = cmp.mapping.scroll_docs(4),
+--   })
+-- })
 
-cmp_mappings['<Tab>'] = nil
-cmp_mappings['<S-Tab>'] = nil
+-- local cmp_select = {behavior = cmp.SelectBehavior.Select}
+-- local cmp_mappings = lsp_zero.defaults.cmp_mappings({
+--   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+--   ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+--   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+--   ["<C-Space>"] = cmp.mapping.complete(),
+-- })
 
-lsp.setup_nvim_cmp({
-  mapping = cmp_mappings
-})
+-- cmp_mappings['<Tab>'] = nil
+-- cmp_mappings['<S-Tab>'] = nil
+--
+-- lsp_zero.setup_nvim_cmp({
+--   mapping = cmp_mappings
+-- })
 
-lsp.set_preferences({
+lsp_zero.set_preferences({
   sign_icons = { }
 })
 
-lsp.on_attach(function(client, bufnr)
+lsp_zero.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
+
+  lsp_zero.default_keymaps({buffer = bufnr})
 
   vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
   vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
@@ -51,16 +62,58 @@ lsp.on_attach(function(client, bufnr)
 
   -- Fix all eslint errors on save [https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint]
   -- TODO: How to run it only for javascript files?
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    -- pattern = "*.ts",
-    buffer = bufnr,
-    command = "EslintFixAll"
-  })
+  -- vim.api.nvim_create_autocmd("BufWritePre", {
+  --   -- pattern = "*.ts",
+  --   buffer = bufnr,
+  --   command = "EslintFixAll"
+  -- })
 end)
 
-lsp.setup()
+lsp_zero.setup()
+
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  -- Replace the language servers listed here 
+  -- with the ones you want to install
+  ensure_installed = {
+    'tsserver',
+    'eslint',
+    'rust_analyzer',
+  },
+  handlers = {
+    lsp_zero.default_setup,
+    lua_ls = function()
+      local lua_opts = lsp_zero.nvim_lua_ls()
+      require('lspconfig').lua_ls.setup(lua_opts)
+    end,
+  },
+})
 
 -- Show diagnostic info inline
 vim.diagnostic.config({
   virtual_text = true,
+})
+
+---
+-- Autocompletion config
+---
+local cmp = require('cmp')
+local cmp_action = lsp_zero.cmp_action()
+
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    -- `Enter` key to confirm completion
+    ['<CR>'] = cmp.mapping.confirm({select = true}),
+
+    -- Ctrl+Space to trigger completion menu
+    ['<C-Space>'] = cmp.mapping.complete(),
+
+    -- Navigate between snippet placeholder
+    ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+
+    -- Scroll up and down in the completion documentation
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+  })
 })
