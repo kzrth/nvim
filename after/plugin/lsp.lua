@@ -59,14 +59,6 @@ lsp_zero.on_attach(function(client, bufnr)
   -- vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-
-  -- Fix all eslint errors on save [https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint]
-  -- TODO: How to run it only for javascript files?
-  -- vim.api.nvim_create_autocmd("BufWritePre", {
-  --   -- pattern = "*.ts",
-  --   buffer = bufnr,
-  --   command = "EslintFixAll"
-  -- })
 end)
 
 lsp_zero.setup()
@@ -87,6 +79,16 @@ require('mason-lspconfig').setup({
       require('lspconfig').lua_ls.setup(lua_opts)
     end,
   },
+})
+
+-- Run eslint fix on save
+require('lspconfig').eslint.setup({
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end,
 })
 
 -- Show diagnostic info inline
