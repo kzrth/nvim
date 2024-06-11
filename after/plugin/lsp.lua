@@ -103,6 +103,11 @@ local cmp = require('cmp')
 local cmp_action = lsp_zero.cmp_action()
 
 cmp.setup({
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "path" },
+    { name = "buffer" },
+  },
   mapping = cmp.mapping.preset.insert({
     -- `Enter` key to confirm completion
     ['<CR>'] = cmp.mapping.confirm({select = true}),
