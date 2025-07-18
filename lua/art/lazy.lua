@@ -52,8 +52,8 @@ require("lazy").setup({
 	  dependencies = {
 		  -- LSP Support
 		  {'neovim/nvim-lspconfig'},             -- Required
-		  {'williamboman/mason.nvim'},           -- Optional
-		  {'williamboman/mason-lspconfig.nvim'}, -- Optional
+		  {'mason-org/mason.nvim'},           -- Optional
+		  {'mason-org/mason-lspconfig.nvim'},           -- Optional
 
 		  -- Autocompletion
 		  {'hrsh7th/nvim-cmp'},         -- Required
@@ -77,5 +77,19 @@ require("lazy").setup({
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "luckasRanarison/tailwind-tools.nvim",
+    name = "tailwind-tools",
+    build = ":UpdateRemotePlugins",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim", -- optional
+      "neovim/nvim-lspconfig", -- optional
+    },
+    opts = {} -- your configuration
+  },
+  {
+    'github/copilot.vim'
   }
 })

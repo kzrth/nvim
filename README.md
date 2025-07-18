@@ -2,7 +2,7 @@
 
 ## Getting started
 
-[Neovim (v0.9.5)](https://github.com/neovim/neovim/releases/tag/v0.9.5) is required.
+[Neovim (v0.11.3)](https://github.com/neovim/neovim/releases/tag/v0.11.3) is required.
 
 You need to have a [patched](https://www.nerdfonts.com/) font if you want icons.
 
