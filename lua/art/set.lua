@@ -26,3 +26,5 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 
 vim.opt.updatetime = 50
+
+vim.g.css_variables_files = { "./src/variables.css" }

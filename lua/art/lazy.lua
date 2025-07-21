@@ -26,8 +26,8 @@ require("lazy").setup({
   },
 
   {
-	  'nvim-telescope/telescope.nvim', tag = '0.1.5',
-	  dependencies = {
+    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+    dependencies = {
       {'nvim-lua/plenary.nvim'}
     }
   },
@@ -48,15 +48,25 @@ require("lazy").setup({
   },
 
   {
-	  'VonHeikemen/lsp-zero.nvim',
-	  dependencies = {
-		  -- LSP Support
-		  {'neovim/nvim-lspconfig'},             -- Required
-		  {'mason-org/mason.nvim'},           -- Optional
-		  {'mason-org/mason-lspconfig.nvim'},           -- Optional
+    'VonHeikemen/lsp-zero.nvim',
+    dependencies = {
+      -- LSP Support
+      {'neovim/nvim-lspconfig'},             -- Required
+      {'mason-org/mason.nvim'},           -- Optional
+      {'mason-org/mason-lspconfig.nvim'},           -- Optional
 
-		  -- Autocompletion
-		  {'hrsh7th/nvim-cmp'},         -- Required
+      -- Autocompletion
+      {
+        'hrsh7th/nvim-cmp',
+        dependencies = { 'roginfarrer/cmp-css-variables' },
+        config = function()
+          require'cmp'.setup {
+            sources = {
+              { name = 'css-variables' }
+            }
+          }
+        end
+      },                            -- Required
 		  {'hrsh7th/cmp-nvim-lsp'},     -- Required
 		  {'hrsh7th/cmp-buffer'},       -- Optional
 		  {'hrsh7th/cmp-path'},         -- Optional
@@ -79,15 +89,9 @@ require("lazy").setup({
     dependencies = { "nvim-lua/plenary.nvim" },
   },
   {
-    "luckasRanarison/tailwind-tools.nvim",
-    name = "tailwind-tools",
-    build = ":UpdateRemotePlugins",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-telescope/telescope.nvim", -- optional
-      "neovim/nvim-lspconfig", -- optional
-    },
-    opts = {} -- your configuration
+    "davidmh/mdx.nvim",
+    config = true,
+    dependencies = {"nvim-treesitter/nvim-treesitter"}
   },
   {
     'github/copilot.vim'

@@ -70,7 +70,6 @@ require('mason-lspconfig').setup({
   ensure_installed = {
     'ts_ls',
     'eslint',
-    'tailwindcss',
     'rust_analyzer',
   },
   handlers = {
