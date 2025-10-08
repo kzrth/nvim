@@ -76,13 +76,13 @@ require('mason-lspconfig').setup({
     lsp_zero.default_setup,
     lua_ls = function()
       local lua_opts = lsp_zero.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
+      vim.lsp.config('lua_ls', lua_opts)
     end,
   },
 })
 
 -- Run eslint fix on save
-require('lspconfig').eslint.setup({
+vim.lsp.config('eslint', {
   on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
@@ -91,7 +91,7 @@ require('lspconfig').eslint.setup({
   end,
 })
 
-require('lspconfig').typos_lsp.setup({
+vim.lsp.config('typos_lsp', {
     -- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
     cmd_env = { RUST_LOG = "error" },
     init_options = {
@@ -118,6 +118,7 @@ local cmp_action = lsp_zero.cmp_action()
 cmp.setup({
   sources = {
     { name = "nvim_lsp" },
+    { name = 'css-variables' },
     { name = "path" },
     { name = "buffer" },
   },

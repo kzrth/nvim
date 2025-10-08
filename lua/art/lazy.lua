@@ -26,7 +26,7 @@ require("lazy").setup({
   },
 
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+    'nvim-telescope/telescope.nvim', tag = '0.1.8',
     dependencies = {
       {'nvim-lua/plenary.nvim'}
     }
@@ -58,14 +58,7 @@ require("lazy").setup({
       -- Autocompletion
       {
         'hrsh7th/nvim-cmp',
-        dependencies = { 'roginfarrer/cmp-css-variables' },
-        config = function()
-          require'cmp'.setup {
-            sources = {
-              { name = 'css-variables' }
-            }
-          }
-        end
+        dependencies = {'roginfarrer/cmp-css-variables'},
       },                            -- Required
 		  {'hrsh7th/cmp-nvim-lsp'},     -- Required
 		  {'hrsh7th/cmp-buffer'},       -- Optional
@@ -92,6 +85,14 @@ require("lazy").setup({
     "davidmh/mdx.nvim",
     config = true,
     dependencies = {"nvim-treesitter/nvim-treesitter"}
+  },
+  {
+    {
+      'jedrzejboczar/exrc.nvim',
+      dependencies = {'neovim/nvim-lspconfig'}, -- (optional)
+      config = true,
+      opts = { --[[ your config ]] } ,
+    },
   },
   {
     'github/copilot.vim'
