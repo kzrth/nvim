@@ -82,13 +82,16 @@ require('mason-lspconfig').setup({
 })
 
 -- Run eslint fix on save
-vim.lsp.config('eslint', {
-  on_attach = function(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.js', '*.jsx', '*.ts', '*.tsx', '*.vue' },
+  callback = function()
+    vim.lsp.buf.format({
+      filter = function(client)
+        return client.name == 'eslint'
+      end,
+      async = false
     })
-  end,
+  end
 })
 
 vim.lsp.config('typos_lsp', {
@@ -103,6 +106,8 @@ vim.lsp.config('typos_lsp', {
         diagnosticSeverity = "Warning"
     }
 })
+
+vim.lsp.enable('typos_lsp')
 
 -- Show diagnostic info inline
 vim.diagnostic.config({
