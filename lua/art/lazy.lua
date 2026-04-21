@@ -42,6 +42,8 @@ require("lazy").setup({
   'tpope/vim-fugitive',
   'numToStr/Comment.nvim',
 
+  { 'nvim-mini/mini.nvim', version = false },
+
   {
     'stevearc/oil.nvim',
     dependencies = { "nvim-tree/nvim-web-devicons" },
